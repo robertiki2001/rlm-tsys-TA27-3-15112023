@@ -3,19 +3,18 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table (name = "cajeros")
 public class Cajero {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String nom_apels;
 	
 	@OneToMany
-    @JoinColumn(name="id")
+    @JoinColumn(name="id_cajero")
 	private List<Venta> venta;
 	
 	  public Cajero() {

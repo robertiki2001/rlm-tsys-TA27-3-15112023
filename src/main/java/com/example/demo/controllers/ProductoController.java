@@ -42,7 +42,7 @@ public class ProductoController {
 		return producto_actualizado;
 	}
 
-	@DeleteMapping("/cajero/{id}")
+	@DeleteMapping("/producto/{id}")
 	public void eliminarProducto(@PathVariable Integer id) {
 		productoService.eliminarProducto(id);
 	}

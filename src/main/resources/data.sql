@@ -1,3 +1,5 @@
+CREATE DATABASE EJ3;
+USE EJ3;
 DROP TABLE IF EXISTS venta;
 DROP TABLE IF EXISTS productos;
 DROP TABLE IF EXISTS cajeros;
@@ -60,3 +62,5 @@ INSERT INTO venta (cajero, maquina, producto) VALUES
     (103, 503, 3),
     (104, 504, 4),
     (105, 505, 5);
+
+INSERT INTO usuario (id, password, role, username) VALUES (1, '$2a$10$qL4eqIngUC4eXzi9yymeMehNrEcTtBVuMQdk5kpWNolQOhKMy8o52', 'user', 'robert3');

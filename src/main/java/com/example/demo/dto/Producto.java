@@ -3,7 +3,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table (name = "productos")
@@ -16,7 +16,7 @@ public class Producto {
 	private int precio;
 	
 	@OneToMany
-    @JoinColumn(name="id")
+    @JoinColumn(name="id_producto")
 	private List<Venta> venta;
 	
 	  public Producto() {
