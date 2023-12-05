@@ -3,9 +3,9 @@ package com.example.demo.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.dto.Producto;
+import com.example.demo.dto.Videogame;
 
 @Repository
-public interface IProductoDAO extends JpaRepository<Producto, Integer>{
+public interface IVideogameDAO extends JpaRepository<Videogame, Integer>{
 
 }

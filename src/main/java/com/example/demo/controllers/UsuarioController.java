@@ -1,61 +1,54 @@
 package com.example.demo.controllers;
 
 import java.util.List;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dao.IUsuarioDAO;
 import com.example.demo.dto.Usuario;
-
+import com.example.demo.services.UsuarioService;
 
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
+@RequestMapping("/api")
 public class UsuarioController {
 
-	private IUsuarioDAO iUsuarioDAO;
+	@Autowired
+	UsuarioService usuarioService;
 
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	public UsuarioController(IUsuarioDAO iUsuarioDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		this.iUsuarioDAO = iUsuarioDAO;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-	}
-	
-	
-	@GetMapping("/response-entity-builder-with-http-headers")
-	public ResponseEntity<String> usingResponseEntityBuilderAndHttpHeaders() {
-	    HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.set("Baeldung-Example-Header", 
-	      "Value-ResponseEntityBuilderWithHttpHeaders");
-
-	    return ResponseEntity.ok()
-	      .headers(responseHeaders)
-	      .body("Response with header using ResponseEntity");
-	}
-	
-	@PostMapping("/users/")
-	public Usuario saveUsuario(@RequestBody Usuario user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		iUsuarioDAO.save(user);
-		return user;
+	@GetMapping("/usuarios")
+	public List<Usuario> list() {
+		return usuarioService.list();
 	}
 
-	@GetMapping("/users/")
-	public List<Usuario> getAllUsuarios() {
-		return iUsuarioDAO.findAll();
+	@GetMapping("/usuario/{id}")
+	public Usuario byId(@PathVariable(name = "id") Integer id) {
+		return usuarioService.byId(id);
 	}
 
-	@GetMapping("/users/{username}")
-	public Usuario getUsuario(@PathVariable String username) {
-		return iUsuarioDAO.findByUsername(username);
+	@PostMapping("/usuario")
+	public Usuario save(@RequestBody Usuario usuario) {
+		return usuarioService.save(usuario);
 	}
-	
-	@DeleteMapping("/users/{id}")
-	public String eliminarUser(@PathVariable(name="id")long id) {
-		iUsuarioDAO.deleteById(id);
-		return "User deleted.";
+
+	@PutMapping("/usuario/{id}")
+	public Usuario update(@PathVariable(name = "id") Integer id, @RequestBody Usuario usuario) {
+
+		Usuario usuario_selected = new Usuario();
+		Usuario usuario_updated = new Usuario();
+
+		usuario_selected = usuarioService.byId(id);
+		usuario_selected.setId(id);
+		usuario_selected.setUsername(usuario.getUsername());
+		usuario_selected.setRole(usuario.getRole());
+		usuario_selected.setPassword(usuario.getPassword());
+
+		usuario_updated = usuarioService.update(usuario_selected);
+
+		return usuario_updated;
 	}
+
+	@DeleteMapping("/usuario/{id}")
+	public void delete(@PathVariable Integer id) {
+		usuarioService.delete(id);
+	}
+
 }

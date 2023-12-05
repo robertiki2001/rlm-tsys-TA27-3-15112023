@@ -1,66 +1,62 @@
-CREATE DATABASE EJ3;
-USE EJ3;
-DROP TABLE IF EXISTS venta;
-DROP TABLE IF EXISTS productos;
-DROP TABLE IF EXISTS cajeros;
-DROP TABLE IF EXISTS maquinas_registradoras;
+DROP DATABASE pruebaTecnicaBack;
+CREATE DATABASE pruebaTecnicaBack;
+USE pruebaTecnicaBack;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS games;
+DROP TABLE IF EXISTS videogames;
+DROP TABLE IF EXISTS parties;
 
 
-CREATE TABLE productos (
+CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    precio INT NOT NULL
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(100) NOT NULL
 );
 
-INSERT INTO productos (id, nombre, precio) VALUES 
-    ('Producto A', 10),
-    ('Producto B', 15),
-    ('Producto C', 20),
-    ('Producto D', 25),
-    ('Producto E', 30);
-
-
-
-CREATE TABLE cajeros (
-    id INT PRIMARY KEY,
-    nom_apels VARCHAR(255) NOT NULL
+INSERT INTO usuario (username, password, role) VALUES 
+    ('Pablo', '123','player'),
+    ('Marta', '456','player'),
+    ('Carla', '123','admin');
+    
+    CREATE TABLE videogames (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO cajeros (id, nom_apels) VALUES 
-    (101, 'Juan Pérez'),
-    (102, 'María López'),
-    (103, 'Pedro Ramírez'),
-    (104, 'Luisa Martínez'),
-    (105, 'Ana Sánchez');
+INSERT INTO videogames (name) VALUES 
+    ('Tetris'),
+    ('Fortnite'),
+    ('Tekken7');
 
-CREATE TABLE maquinas_registradoras (
-    id INT PRIMARY KEY,
-    piso INT NOT NULL
+CREATE TABLE games (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    state VARCHAR(20) NOT NULL,
+    id_usuario int,
+    id_videogame int,
+    FOREIGN KEY (id_usuario) REFERENCES usuario (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_videogame) REFERENCES videogames (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO maquinas_registradoras (id, piso) VALUES 
-    (501, 1),
-    (502, 1),
-    (503, 2),
-    (504, 2),
-    (505, 3);
+INSERT INTO games (state, id_usuario, id_videogame) VALUES 
+    ('En progreso', 1, 1),
+    ('Terminada', 2, 2),
+    ('Cancelada', 3, 3);
 
 
-CREATE TABLE venta (
-    id INT AUTO_INCREMENT PRIMARY KEY
-    id_cajero INT,
-    id_maquina_registradora INT,
-    id_producto INT,
-    FOREIGN KEY (id_cajero) REFERENCES cajeros (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_maquina_registradora) REFERENCES maquinas_registradoras (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (id_producto) REFERENCES productos (id) ON UPDATE CASCADE ON DELETE CASCADE
+
+CREATE TABLE parties (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    content VARCHAR(100) NOT NULL,
+    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id_usuario int,
+    FOREIGN KEY (id_usuario) REFERENCES usuario (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO venta (cajero, maquina, producto) VALUES 
-    (101, 501, 1),
-    (102, 502, 2),
-    (103, 503, 3),
-    (104, 504, 4),
-    (105, 505, 5);
+INSERT INTO parties (content, id_usuario) VALUES 
+    ('Hola buenas chavales', 1),
+    ('Eii como va!', 2),
+    ('Le damos o que', 3);
 
-INSERT INTO usuario (id, password, role, username) VALUES (1, '$2a$10$qL4eqIngUC4eXzi9yymeMehNrEcTtBVuMQdk5kpWNolQOhKMy8o52', 'user', 'robert3');
+INSERT INTO usuario (id, password, role, username) VALUES (5, '$2a$10$qL4eqIngUC4eXzi9yymeMehNrEcTtBVuMQdk5kpWNolQOhKMy8o52', 'user', 'robert');

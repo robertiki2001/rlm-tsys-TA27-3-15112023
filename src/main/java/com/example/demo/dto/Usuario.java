@@ -1,19 +1,50 @@
 package com.example.demo.dto;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private int id;
+
 	private String username;
+
 	private String password;
+
 	private String role;
+	
+	@OneToMany
+	@JoinColumn(name = "id_usuario")
+	@JsonIgnore
+	private List<Game> game;
+	
+	@OneToMany
+	@JoinColumn(name = "id_usuario")
+	@JsonIgnore
+	private List<Party> party;
+	
+	public Usuario() {
+		super();
+	}
+	
+	public Usuario(int id, String username, String password, String role, List<Game> game, List<Party> party) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.game = game;
+		this.party = party;
+	}
 
 
-	public long getId() {
+
+	public int getId() {
 		return id;
 	}
 
@@ -40,6 +71,31 @@ public class Usuario {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "Game")
+	public List<Game> getGame() {
+		return game;
+	}
+
+	public void setGame(List<Game> game) {
+		this.game = game;
+	}
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "Party")
+	public List<Party> getParty() {
+		return party;
+	}
+
+	public void setParty(List<Party> party) {
+		this.party = party;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	
 	
 }
